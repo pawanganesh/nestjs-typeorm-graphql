@@ -1,8 +1,23 @@
 type User {
-  id: ID!
+  id: ID
   full_name: String!
+  email: String!
+  avatar: String!
+  status: String!
+  role: String!
+}
+
+input CreateUserInput {
+  full_name: String!
+  email: String!
+  password: String!
+  role: String!
 }
 
 type Query {
   users: [User]
+}
+
+type Mutation {
+  createUser(payload: CreateUserInput!): String!
 }

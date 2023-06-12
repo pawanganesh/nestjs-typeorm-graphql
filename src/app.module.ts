@@ -5,7 +5,7 @@ import { join } from 'path';
 import { TypeOrmConfig } from './orm-config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
 
 @Module({
   imports: [
@@ -14,8 +14,16 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
       definitions: { path: join(process.cwd(), 'src/graphql.ts'), outputAs: 'class' },
-      playground: false,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      playground: true,
+      formatError: (error: GraphQLError) => {
+        const graphQLFormattedError: GraphQLFormattedError = {
+          message: error.message,
+          extensions: {
+            code: error.extensions.code,
+          },
+        };
+        return graphQLFormattedError;
+      },
     }),
     UserModule,
   ],
