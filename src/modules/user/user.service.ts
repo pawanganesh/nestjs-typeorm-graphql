@@ -1,9 +1,11 @@
 import { HashHelper } from 'src/helpers/hash.helper';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './repositories/user.repository';
-import { AuthProvider, User, UserStatus } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import { UserExistsException } from 'src/common/http/exceptions/user-exists.exception';
 import { Injectable } from '@nestjs/common';
+import { AuthProvider } from './enums/auth-provider.enum';
+import { UserStatus } from './enums/user-status.enum';
 
 @Injectable()
 export class UserService {

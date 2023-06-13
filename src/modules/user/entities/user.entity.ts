@@ -1,27 +1,8 @@
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
-export enum UserStatus {
-  UNVERIFIED = 'UNVERIFIED',
-  ACTIVE = 'ACTIVE',
-  SUSPENDED = 'SUSPENDED',
-  BANNED = 'BANNED',
-  DELETED = 'DELETED',
-}
-
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  STAFF = 'STAFF',
-  VENDOR = 'VENDOR',
-  RIDER = 'RIDER',
-  CUSTOMER = 'CUSTOMER',
-}
-
-export enum AuthProvider {
-  LOCAL = 'LOCAL',
-  GOOGLE = 'GOOGLE',
-  APPLE = 'APPLE',
-}
+import { AuthProvider } from '../enums/auth-provider.enum';
+import { UserStatus } from '../enums/user-status.enum';
+import { UserRole } from '../enums/user-role.enum';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
