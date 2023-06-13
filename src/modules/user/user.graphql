@@ -11,7 +11,7 @@ input CreateUserInput {
   full_name: String!
   email: String!
   password: String!
-  role: String!
+  role: String
 }
 
 type Query {

@@ -10,7 +10,7 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
   database: DATABASE.DATABASE_NAME,
   synchronize: NODE_ENV === 'development',
   logging: NODE_ENV === 'development',
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
   cli: {
     entitiesDir: 'src',
