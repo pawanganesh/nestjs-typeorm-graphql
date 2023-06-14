@@ -16,7 +16,7 @@ import { NODE_ENV } from 'src/config/constant';
 
       formatError: (error: GraphQLError) => {
         const { message, extensions } = error;
-        const { stacktrace, ...stacktraceFreeExtensions } = extensions;
+        const { stacktrace, originalError, ...stacktraceFreeExtensions } = extensions;
         const graphQLFormattedError: GraphQLFormattedError = { message, extensions: { ...stacktraceFreeExtensions } };
         return graphQLFormattedError;
       },

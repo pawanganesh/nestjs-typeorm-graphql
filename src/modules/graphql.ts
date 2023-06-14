@@ -34,7 +34,7 @@ export abstract class IMutation {
 }
 
 export class User {
-    id?: Nullable<string>;
+    id: string;
     full_name: string;
     email: string;
     avatar: string;
@@ -43,7 +43,7 @@ export class User {
 }
 
 export abstract class IQuery {
-    abstract users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
+    abstract getMyProfile(): User | Promise<User>;
 }
 
 type Nullable<T> = T | null;

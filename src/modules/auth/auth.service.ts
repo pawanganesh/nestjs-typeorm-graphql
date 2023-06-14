@@ -12,6 +12,7 @@ import {
   InvalidCredentialsException,
   SuspendedUserException,
 } from '../../common/exceptions';
+import { UnverifiedUserException } from 'src/common/exceptions/unverified-user.exception';
 
 @Injectable()
 export class AuthService {
@@ -31,7 +32,7 @@ export class AuthService {
 
     if (user_row.status !== UserStatus.ACTIVE) {
       if (user_row.status === UserStatus.UNVERIFIED)
-        throw new InvalidCredentialsException({ success: false, verified: false });
+        throw new UnverifiedUserException({ success: false, verified: false });
       if (user_row.status === UserStatus.BANNED) throw new BannedUserException();
       if (user_row.status === UserStatus.SUSPENDED) throw new SuspendedUserException();
       if (user_row.status === UserStatus.DELETED) throw new DeletedUserException();

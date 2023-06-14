@@ -1,10 +1,15 @@
 type User {
-  id: ID
+  id: ID!
   full_name: String!
   email: String!
-  avatar: String!
+  phone_number: String
+  avatar: String
+  auth_provider: String!
   status: String!
   role: String!
+  last_login: Date!
+  created_at: Date!
+  updated_at: Date!
 }
 
 input CreateUserInput {
@@ -15,7 +20,7 @@ input CreateUserInput {
 }
 
 type Query {
-  users: [User]
+  getMyProfile: User!
 }
 
 type Mutation {
