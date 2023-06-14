@@ -2,10 +2,10 @@ import { HashHelper } from 'src/helpers/hash.helper';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './repositories/user.repository';
 import { User } from './entities/user.entity';
-import { UserExistsException } from 'src/common/http/exceptions/user-exists.exception';
 import { Injectable } from '@nestjs/common';
 import { AuthProvider } from './enums/auth-provider.enum';
 import { UserStatus } from './enums/user-status.enum';
+import { UserExistsException } from '../../common/exceptions';
 
 @Injectable()
 export class UserService {

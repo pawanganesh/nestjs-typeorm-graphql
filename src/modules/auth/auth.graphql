@@ -1,0 +1,15 @@
+input UserCredentials {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  success: Boolean!
+  verified: Boolean!
+  message: String!
+  token: String!
+}
+
+type Mutation {
+  login(payload: UserCredentials!): LoginResponse!
+}

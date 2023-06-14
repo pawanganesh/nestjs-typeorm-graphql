@@ -1,8 +1,8 @@
+import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
-import { join } from 'path';
 import { NODE_ENV } from 'src/config/constant';
 
 @Module({
@@ -11,15 +11,13 @@ import { NODE_ENV } from 'src/config/constant';
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
       definitions: { path: join(process.cwd(), 'src/modules/graphql.ts'), outputAs: 'class' },
+
       playground: NODE_ENV === 'development',
+
       formatError: (error: GraphQLError) => {
-        const graphQLFormattedError: GraphQLFormattedError = {
-          message: error.message,
-          extensions: {
-            code: error.extensions.code,
-            originalError: error.extensions.originalError,
-          },
-        };
+        const { message, extensions } = error;
+        const { stacktrace, ...stacktraceFreeExtensions } = extensions;
+        const graphQLFormattedError: GraphQLFormattedError = { message, extensions: { ...stacktraceFreeExtensions } };
         return graphQLFormattedError;
       },
     }),
