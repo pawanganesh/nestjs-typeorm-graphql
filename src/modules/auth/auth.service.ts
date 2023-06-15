@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../user/repositories/user.repository';
 import { UserCredentialsDto } from './dto/login.dto';
-import { HashHelper } from 'src/helpers/hash.helper';
 import { UserStatus } from '../user/enums/user-status.enum';
 import { JwtService } from '@nestjs/jwt';
 import { JWT_SECRET } from '../../config/constant';
@@ -13,6 +12,7 @@ import {
   SuspendedUserException,
 } from '../../common/exceptions';
 import { UnverifiedUserException } from 'src/common/exceptions/unverified-user.exception';
+import { HashHelper } from '../../helpers';
 
 @Injectable()
 export class AuthService {

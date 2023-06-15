@@ -1,8 +1,9 @@
 import { BaseEntity } from '../../../common/entities/base.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AuthProvider } from '../enums/auth-provider.enum';
 import { UserStatus } from '../enums/user-status.enum';
 import { UserRole } from '../enums/user-role.enum';
+import { UserOTP } from './user-otp.entity';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -35,4 +36,8 @@ export class User extends BaseEntity {
 
   @Column({ name: 'last_login', type: 'timestamp with time zone', nullable: true, select: false })
   last_login: Date;
+
+  // relations
+  @OneToMany(() => UserOTP, (otp) => otp.user)
+  user_otps: UserOTP[];
 }

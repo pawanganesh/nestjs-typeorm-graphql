@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsString, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsEnum, IsIn, IsString, IsStrongPassword } from 'class-validator';
 import { UserRole } from '../enums/user-role.enum';
 
 export class CreateUserDto {
@@ -12,5 +12,6 @@ export class CreateUserDto {
   password: string;
 
   @IsEnum(UserRole)
+  @IsIn([UserRole.CUSTOMER, UserRole.VENDOR, UserRole.RIDER])
   role: UserRole = UserRole.CUSTOMER;
 }

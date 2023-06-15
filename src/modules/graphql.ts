@@ -30,7 +30,7 @@ export class LoginResponse {
 export abstract class IMutation {
     abstract login(payload: UserCredentials): LoginResponse | Promise<LoginResponse>;
 
-    abstract createUser(payload: CreateUserInput): string | Promise<string>;
+    abstract createUser(payload: CreateUserInput): User | Promise<User>;
 }
 
 export class User {
@@ -42,7 +42,7 @@ export class User {
     auth_provider: string;
     status: string;
     role: string;
-    last_login: Date;
+    last_login?: Nullable<Date>;
     created_at: Date;
     updated_at: Date;
 }

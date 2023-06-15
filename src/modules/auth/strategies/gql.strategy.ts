@@ -3,8 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { DataSource } from 'typeorm';
 import { JWT_SECRET } from '../../../config/constant';
-import { UserStatus } from '../../../modules/user/enums/user-status.enum';
-import { User } from '../../../modules/user/entities/user.entity';
+import { UserStatus } from '../../user/enums/user-status.enum';
+import { User } from '../../user/entities/user.entity';
 
 @Injectable()
 export class GqlStrategy extends PassportStrategy(Strategy, 'gql') {

@@ -9,7 +9,7 @@ type User {
   auth_provider: String!
   status: String!
   role: String!
-  last_login: Date!
+  last_login: Date
   created_at: Date!
   updated_at: Date!
 }
@@ -26,5 +26,5 @@ type Query {
 }
 
 type Mutation {
-  createUser(payload: CreateUserInput!): String!
+  createUser(payload: CreateUserInput!): User!
 }
