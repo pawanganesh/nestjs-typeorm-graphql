@@ -1,10 +1,10 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
-import { LoggedInUser } from 'src/decorators/loggedin-user.decorator';
 import { User } from './entities/user.entity';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from 'src/@guards/gql.guard';
+import { GqlAuthGuard } from '../../@guards/gql.guard';
+import { GetUser } from '../../decorators/get-user.decorator';
 
 @Resolver('User')
 export class UserResolver {
@@ -17,7 +17,7 @@ export class UserResolver {
 
   @Query('getMyProfile')
   @UseGuards(GqlAuthGuard)
-  getMyProfile(@LoggedInUser() user: User) {
+  getMyProfile(@GetUser() user: User) {
     return user;
   }
 }

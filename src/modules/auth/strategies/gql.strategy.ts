@@ -7,7 +7,7 @@ import { UserStatus } from '../../../modules/user/enums/user-status.enum';
 import { User } from '../../../modules/user/entities/user.entity';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'gql') {
+export class GqlStrategy extends PassportStrategy(Strategy, 'gql') {
   constructor(private readonly dataSource: DataSource) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

@@ -1,3 +1,5 @@
+scalar Date
+
 type User {
   id: ID!
   full_name: String!

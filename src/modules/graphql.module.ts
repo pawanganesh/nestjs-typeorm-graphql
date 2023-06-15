@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { NODE_ENV } from 'src/config/constant';
+// import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
@@ -13,6 +14,9 @@ import { NODE_ENV } from 'src/config/constant';
       definitions: { path: join(process.cwd(), 'src/modules/graphql.ts'), outputAs: 'class' },
 
       playground: NODE_ENV === 'development',
+
+      // playground: false,
+      // plugins: [ApolloServerPluginLandingPageLocalDefault()],
 
       formatError: (error: GraphQLError) => {
         const { message, extensions } = error;

@@ -37,9 +37,14 @@ export class User {
     id: string;
     full_name: string;
     email: string;
-    avatar: string;
+    phone_number?: Nullable<string>;
+    avatar?: Nullable<string>;
+    auth_provider: string;
     status: string;
     role: string;
+    last_login: Date;
+    created_at: Date;
+    updated_at: Date;
 }
 
 export abstract class IQuery {
