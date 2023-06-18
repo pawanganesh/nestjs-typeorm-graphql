@@ -10,17 +10,70 @@ import {
   DeletedUserException,
   InvalidCredentialsException,
   SuspendedUserException,
+  UserExistsException,
 } from '../../common/exceptions';
 import { UnverifiedUserException } from 'src/common/exceptions/unverified-user.exception';
-import { HashHelper } from '../../helpers';
+import { HashHelper, generateOTP, sendMail } from '../../helpers';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User as IUser } from '../graphql';
+import { DataSource } from 'typeorm';
+import { User } from '../user/entities/user.entity';
+import { AuthProvider } from '../user/enums/auth-provider.enum';
+import { UserOTP } from '../user/entities/user-otp.entity';
+import { UserOTPType } from '../user/enums/user-otp.enum';
+import { VerifyAccountDto } from './dto/verify-account.dto';
+import { CustomNotFoundException } from '../../common/exceptions/custom-not-found.exception';
+import { CustomBadRequestException } from '../../common/exceptions/custom-bad-request.exception';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UserRepository, private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
+    private readonly dataSource: DataSource,
+  ) {}
+
+  async createUser(payload: CreateUserDto): Promise<IUser> {
+    const { password, email, ...rest } = payload;
+
+    const user_row: User = await this.userRepository.findOne({ where: { email: email.toLowerCase() } });
+    if (user_row) throw new UserExistsException();
+
+    const hasedPassword: string = await HashHelper.hash(password);
+
+    const user = await this.userRepository.save({
+      ...rest,
+      email: email.toLowerCase(),
+      auth_provider: AuthProvider.LOCAL,
+      status: UserStatus.UNVERIFIED,
+      password: hasedPassword,
+    });
+
+    const user_otp = await this.dataSource
+      .getRepository(UserOTP)
+      .save({ code: generateOTP(6), otp_type: UserOTPType.EMAIL_VERIFICATION, user_id: user.id });
+
+    const text: string = `
+    Welcome to APP_NAME,
+
+    Please verify your account by entering the following code:
+    ${user_otp.code}
+
+    Note: This code will expire in 15 minutes.
+
+    Thanks,
+    APP_NAME Team
+    `;
+
+    sendMail({ to: user.email, subject: 'Account Verification', text });
+
+    const { password: _, ...user_data } = user;
+    return user_data;
+  }
 
   async login(payload: UserCredentialsDto): Promise<LoginResponse> {
     const user_row = await this.userRepository.findOne({
-      where: { email: payload.email },
+      where: { email: payload.email.toLowerCase() },
       select: { id: true, password: true, status: true },
     });
 
@@ -48,5 +101,18 @@ export class AuthService {
       message: 'Login success.',
       token,
     };
+  }
+
+  async verifyAccount(payload: VerifyAccountDto): Promise<boolean> {
+    const user_row = await this.userRepository.findOne({ where: { email: payload.email.toLowerCase() } });
+    if (!user_row) throw new CustomNotFoundException('User not found.');
+
+    if (user_row.status === UserStatus.ACTIVE) throw new CustomBadRequestException('User already verified.');
+
+    // TODO: Check if OTP is expired
+
+    // TODO: Check if OTP is already used
+
+    return true;
   }
 }

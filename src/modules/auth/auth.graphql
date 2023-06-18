@@ -10,6 +10,12 @@ type LoginResponse {
   token: String!
 }
 
+input VerifyAccountInput {
+  code: String!
+  email: String!
+}
+
 type Mutation {
   login(payload: UserCredentials!): LoginResponse!
+  verifyAccount(payload: VerifyAccountInput!): Boolean!
 }

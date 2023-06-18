@@ -13,6 +13,11 @@ export class UserCredentials {
     password: string;
 }
 
+export class VerifyAccountInput {
+    code: string;
+    email: string;
+}
+
 export class CreateUserInput {
     full_name: string;
     email: string;
@@ -29,6 +34,8 @@ export class LoginResponse {
 
 export abstract class IMutation {
     abstract login(payload: UserCredentials): LoginResponse | Promise<LoginResponse>;
+
+    abstract verifyAccount(payload: VerifyAccountInput): boolean | Promise<boolean>;
 
     abstract createUser(payload: CreateUserInput): User | Promise<User>;
 }
